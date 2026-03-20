@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 页面基础配置 -->
+  <meta charset="utf-8">
+  <meta name="description"
+        content="A unified image tokenizer for mulitmodality understanding and generation">
+  <meta name="keywords" content="SemHiTok, unified image tokenizer, unified VLM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SemHiTok: A Unified Image Tokenizer via Semantic-Guided Hierarchical Codebook for Multimodal Understanding and Generation</title>
+
+  <!-- Google Analytics 统计代码 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <!-- 引入谷歌字体 -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <!-- 引入 Bulma CSS 框架及相关组件样式 -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <!-- 引入 JavaScript 库 -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<!-- 顶部导航栏 -->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+
+    </div>
+
+  </div>
+</nav>
+
+
+<!-- 主标题区域：包含论文标题、作者信息、机构、相关链接 -->
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <!-- 论文标题 -->
+          <h1 class="title is-1 publication-title">SemHiTok: A Unified Image Tokenizer via Semantic-Guided Hierarchical Codebook for Multimodal Understanding and Generation</h1>
+          
+          <!-- 作者列表 -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Zisheng Chen<sup>1</sup>,</span>
+            <span class="author-block">
+              Chunwei Wang<sup>2</sup>,</span>
+            <span class="author-block">
+              Runhui Huang<sup>3</sup>,
+            </span>
+            <span class="author-block">
+              Hongbin Xu<sup>4</sup>,
+            </span>
+            <span class="author-block">
+              Xiuwei Chen<sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Jun Zhou<sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Jianhua Han<sup>2</sup>
+            </span>
+            <span class="author-block">
+              Hang Xu<sup>2</sup>
+            </span>
+            <span class="author-block">
+              Xiaodan Liang<sup>1</sup>
+            </span>
+          </div>
+
+          <!-- 作者所属机构 -->
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Sun Yat-sen University,</span>
+            <span class="author-block"><sup>2</sup>Huawei Noah’s Ark Lab,</span>
+            <span class="author-block"><sup>3</sup>University of Hong Kong,</span>
+            <span class="author-block"><sup>4</sup>South China University of Technology,</span>
+          </div>
+
+          <!-- 相关链接按钮：论文、arXiv、视频、代码、数据集 -->
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF 论文链接 -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2503.06764"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- GitHub 代码仓库链接 -->
+              <span class="link-block">
+                <a 
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code(coming soon)</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 结果轮播区域：展示多个示例视频 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Image Generation Results</h2>
+
+    <div class="columns is-multiline is-centered">
+      
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_1.png" alt="Image Generation 1" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_2.png" alt="Image Generation 2" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_3.png" alt="Image Generation 3" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_4.png" alt="Image Generation 4" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_5.png" alt="Image Generation 5" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_6.png" alt="Image Generation 6" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_7.png" alt="Image Generation 7" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_8.png" alt="Image Generation 8" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_9.png" alt="Image Generation 9" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_10.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_11.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_12.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_13.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_14.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+      <div class="column is-one-fifth has-text-centered">
+        <img src="./static/images/img_15.png" alt="Image Generation 10" style="width: 100%; border-radius: 2px;"/>
+        
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Comparison of Different Approaches</h2>
+
+    <div class="columns is-multiline is-centered">
+      
+      <div class="column is-full has-text-centered">
+        <img src="./static/images/compare.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+        <p style="font-size: 1.1em; margin-top: 10px; text-align: justify; line-height: 1.5;">
+          Illustration of other tokenizers and SemHiTok.
+          <b>HyStruct</b>: Using a single model to extract information at different levels;
+          <b>DStruct</b>: Using different models to extract information at various levels;
+          <b>JTrain</b>: Using a joint optimization training strategy;
+          <b>DTrain</b>: Adopt a phased optimization training strategy.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 摘要和论文视频区域 -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- 论文摘要 -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            In this paper, we introduce <b>SemHiTok</b>, 
+            a unified image Tokenizer via Semantic-Guided Hierarchical codebook that provides consistent discrete representations for multimodal understanding and generation.
+          </p>
+          <p>
+            Recently, unified image tokenizers have sparked exploration within the research community,
+            which is designed to capture high-level semantic features for understanding and retaining low-level pixel features for generation.
+            Previous works attempt to train a unified image tokenizer by combining loss for semantic distillation and pixel reconstruction.
+            However, due to the differing levels of features prioritized by multimodal understanding and generation, joint training methods face significant challenges in achieving a good trade-off.
+            SemHiTok addresses this challenge through a novel semantic-guided hierarchical codebook, which builds pixel sub-codebooks on a pretrained semantic codebook.
+            This design decouples the semantic and pixel in terms of structure and training strategy, enabling the tokenizer to capture pixel features while retaining its ability to comprehend high-level semantic information.
+          </p>
+          <p>
+            Our experiments demonstrate that SemHiTok achieves leading performance in image reconstruction and multimodal understanding under the LLaVA-v1.5 setting.
+            Further, we develop a unified MLLM with SemHiTok, which exhibits superior performance across multimodal understanding and generation tasks.
+            Extensive experiments confirm our analysis, showing that our unified image tokenizer architecture achieves a better trade-off.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Method</h2>
+
+    <div class="columns is-multiline is-centered">
+      
+      <div class="column is-full has-text-centered">
+        <img src="./static/images/framwork.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+        <p class="is-size-5" style="margin-top: 15px; text-align: justify; line-height: 1.6;">
+          <b>(a)</b> SemHiTok is structurally composed of two branches: 
+          <strong style="color: #2563eb;">semantic branch</strong> and 
+          <strong style="color: #dc2626;">pixel branch</strong>. 
+          The <strong style="color: #2563eb;">semantic branch</strong> is trained following the VQKD, where the semantic codebook is learned through semantic loss. 
+          We propose a semantic-guided hierarchical codebook (SGCH) composed of multiple pixel sub-codebooks, in which each pixel sub-codebook is in a one-to-one correspondence with a semantic code. 
+          The selection of pixel sub-codebook is indexed by the semantic code from semantic quantization. 
+          To enable a unified discrete representation, we concatenate the quantized semantic and pixel features along the channel dimension and feed the result into the pixel decoder for reconstruction.
+          
+          <b>(b)</b> Each semantic code is allocated to the corresponding pixel sub-codebook, and their features are concatenated along the dimension.
+          
+          <b>(c)</b> An illustration of the unified MLLM framework.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Experiments</h2>
+
+    <div class="columns is-multiline is-centered">
+      
+      <div class="column is-full has-text-centered">
+        <p class="has-text-weight-bold has-text-black is-size-5" style="margin-top: 12px;">
+          Tab 1. The rFID performance comparison.
+        </p>
+        <img src="./static/images/rfid.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+      </div>
+
+      <div class="column is-full has-text-centered">
+        <p class="has-text-weight-bold has-text-black is-size-5" style="margin-top: 12px;">
+          Tab 2. The Llava setting performance comparison.
+        </p>
+        <img src="./static/images/llava.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+      </div>
+
+      <div class="column is-full has-text-centered">
+        <p class="has-text-weight-bold has-text-black is-size-5" style="margin-top: 12px;">
+          Tab 3. The multimodal understanding performance comparison.
+        </p>
+        <img src="./static/images/understanding.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+      </div>
+
+      <div class="column is-full has-text-centered">
+        <p class="has-text-weight-bold has-text-black is-size-5" style="margin-top: 12px;">
+          Tab 4. The Text-To-Image generation performance comparison.
+        </p>
+        <img src="./static/images/generation.png" alt="Comparison" style="width: 100%; border-radius: 2px;"/>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- BibTeX 引用格式 -->
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{chen2025semhitok,
+      title={Semhitok: A unified image tokenizer via semantic-guided hierarchical codebook for multimodal understanding and generation},
+      author={Chen, Zisheng and Wang, Chunwei and Huang, Runhui and Xu, Hongbin and Chen, Xiuwei and Zhou, Jun and Han, Jianhua and Xu, Hang and Liang, Xiaodan},
+      journal={arXiv preprint arXiv:2503.06764},
+      year={2025}
+    }</code></pre>
+  </div>
+</section>
+
+
+<!-- 页脚：包含许可证说明和源码引用说明 -->
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            The website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> under a <a rel="license"
+            href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
